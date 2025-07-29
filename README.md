@@ -169,245 +169,148 @@ However, there is a notable volume of error responses (**744 events or ~24.8%**)
 These error patterns, especially in combination with the suspicious URIs previously identified, strongly suggest this log set includes **simulated attack behavior** or **real probing/scanning attempts**.
 
 ## 📊 3. Detect Anomalies
-## 📌 Objective
 
-The goal is to detect unusual behavior in SSH activity by focusing on the following indicators:
+## 1. Top 10 Source IPs Generating Web Traffic
+### 🎯 Goal
 
-- Time-based event spikes  
-- Failed login patterns  
-- Suspicious IP behavior
-
-## 1. Look for unusual patterns in SSH activity (e.g., sudden spikes in login attempts)
-
-![Top Source IPs](https://private-user-images.githubusercontent.com/67587985/471067109-dff7a77a-dbfb-48a9-a672-7e926a4abea7.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM1MjY1NDMsIm5iZiI6MTc1MzUyNjI0MywicGF0aCI6Ii82NzU4Nzk4NS80NzEwNjcxMDktZGZmN2E3N2EtZGJmYi00OGE5LWE2NzItN2U5MjZhNGFiZWE3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjYlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI2VDEwMzcyM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTJiNzlmOGEyZTVjNTBmMDcxMDNjMzJlYjg3NzVlNDQzYzJiYWMyNGJjMDc1NDJhNDVhNzQ1MzkyMGVlMjkzZjcmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.RDBuI-e9iCilqdjvMQb6XlC3FpVTXrtJ2lB5fLLpd0Y)
-
-<p align="center"><b>Figure 5:</b> Timechart output showing the count of SSH log events over a one-hour span.</p>
-
-## 📊 Result of timechart
-
-| Time | Count |
-|-------------|--------|
-| 2025-04-25 18:00       | 3000   |
-
-## 📉 Observation
-All SSH events in this dataset occurred within a single hour, producing a single visible bar on the timechart. This suggests the dataset is time-compressed or simulated.
-
-
-## 🧪 Conclusion
-Even with a limited time range, this method demonstrates how time-based visualizations can help detect:
-
-- Abnormal spikes in SSH traffic
-
-- Potential brute-force patterns
-
-- Unusual login activity frequency
-
-## 2. Analyze failed login attempts
-
-![Top Source IPs](https://private-user-images.githubusercontent.com/67587985/471067675-976737f1-c302-4524-a0e2-a11475f8553c.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM1MjcxMzIsIm5iZiI6MTc1MzUyNjgzMiwicGF0aCI6Ii82NzU4Nzk4NS80NzEwNjc2NzUtOTc2NzM3ZjEtYzMwMi00NTI0LWEwZTItYTExNDc1Zjg1NTNjLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjYlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI2VDEwNDcxMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWRlOWQ1Yjk4ZGZlODE1NjgyMjA0Y2E2YzIyNjQ0MWVmYzRjMmNjZTRhZTJhZjM2MjkxOWRiN2E4OWFjOWI3NjYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.4NchKiW6x9Yt_OeHlXZOVrrQCe3HXrVtNOCroQu_-wE)
-
-<p align="center"><b>Figure 6:</b> Result of failed SSH login attempts</p>
-
-## 📊 Result of HTTP Status Codes
-
-| Time | failed_logins |
-|-------------|--------|
-| 2025-04-25 18:00       | 744   |
-
-## 📉 What I Observed
-
-All 744 failed login attempts were logged within a single hour window (`2025-04-25 18:00`).  
-This was visualized as a single bar on the Splunk timechart.
-
-## 🧠 Why This Still Matters
-
-Even though the dataset is time-compressed and doesn't span multiple hours or days, this approach still demonstrates:
-
-- The value of time-based visualizations  
-- How sudden spikes can reveal security threats  
-- That real-world SSH logs would benefit from this technique
-
-If this were production data, seeing hundreds of failed logins in a short time window would be a strong indicator of a brute-force attack or bot activity.
-
-## 🧪 Conclusion
-
-Using the condition `status_code >= 400`, I isolated failed login attempts and visualized their frequency over time.  
-Although the dataset only covers a one-hour period (744 failed events), this time-based view is valuable in real-world scenarios to detect spikes in login failures.
-
-A high number of failures in a short span is often associated with brute-force password guessing, scripted reconnaissance, or malformed request testing.
-
-## 3. Investigate SSH sessions from unusual or suspicious source IP addresses
-![Top Source IPs](https://private-user-images.githubusercontent.com/67587985/471068751-97cec61b-0830-4f31-b21b-983fc8c07374.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM1Mjc5MzcsIm5iZiI6MTc1MzUyNzYzNywicGF0aCI6Ii82NzU4Nzk4NS80NzEwNjg3NTEtOTdjZWM2MWItMDgzMC00ZjMxLWIyMWItOTgzZmM4YzA3Mzc0LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjYlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI2VDExMDAzN1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTM5MWZmNWIxMmY3NTZjOTZlYzBhYmNhMGU5MjYxYzI2ZmMzNzFiZDQxMGQ0MTBhZGE5MzU0YzczMTRiM2NmMTMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.zXU0RpeS8rQAeTh6ezw5Ni0E4SUhmt0NPVP5SEzGgXo)
-
-<p align="center"><b>Figure 7:</b> Event type for 10.0.0.28</p>
-
-![Top Source IPs](https://private-user-images.githubusercontent.com/67587985/471068774-d7c3d06f-c51a-4661-8053-15515f705715.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM1Mjc5NTAsIm5iZiI6MTc1MzUyNzY1MCwicGF0aCI6Ii82NzU4Nzk4NS80NzEwNjg3NzQtZDdjM2QwNmYtYzUxYS00NjYxLTgwNTMtMTU1MTVmNzA1NzE1LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjYlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI2VDExMDA1MFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTE3ZDBjMzllZTFkNmNmNjU5MDBmMjlmMTMyNDU5Yzc3YjJkMDEwNDg4Yzk4ZGNiZTFlNmI3OTFiN2VkMzMxMTAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.Oc9WCHL2L-x6qPjqDDVU0MBY8Z0iTU0L0hQ9FQHdNXU)
-
-<p align="center"><b>Figure 8:</b> Method for 10.0.0.28</p>
-
-![Top Source IPs](https://private-user-images.githubusercontent.com/67587985/471069143-ec5ce1c6-38c9-4187-9ca2-6b125e168dd5.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM1MjgxMTgsIm5iZiI6MTc1MzUyNzgxOCwicGF0aCI6Ii82NzU4Nzk4NS80NzEwNjkxNDMtZWM1Y2UxYzYtMzhjOS00MTg3LTljYTItNmIxMjVlMTY4ZGQ1LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjYlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI2VDExMDMzOFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWJjNzI3YWM4MmIyYTIzNGViMjBiZmM4OWM1OGJjMjIzODkzMzM1ODA1NDgyODMxZTczM2MwNjgzMmNhZDk1NWEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.iegHbXEQXMtqBNiGWMy7DEVGPNuU5HQVou3izccybh8)
-
-<p align="center"><b>Figure 9:</b> Event type for 10.0.0.42</p>
-
-![Top Source IPs](https://private-user-images.githubusercontent.com/67587985/471069157-cc44312c-5e7b-4c49-a5e8-409df8c93291.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM1MjgxMjUsIm5iZiI6MTc1MzUyNzgyNSwicGF0aCI6Ii82NzU4Nzk4NS80NzEwNjkxNTctY2M0NDMxMmMtNWU3Yi00YzQ5LWE1ZTgtNDA5ZGY4YzkzMjkxLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjYlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI2VDExMDM0NVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTEwZDcxYzFhYWE3OTQxYjQwYjE4MDQxMzlkOWJjZGRjMGNlNjUwNzU3Njg4MmI0MTk5YzhiZjg5ZjU4ZDAxMTAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.E2cUZwYNfie3hOOJlDK-KVy8ie1poBg42-5p4_xykPg)
-
-<p align="center"><b>Figure 10:</b> Method for 10.0.0.42</p>
-
-## 📊 Per-IP Activity Analysis
-
-This section dives into two of the top source IP addresses based on SSH activity volume, highlighting their behavior across key fields.
+Identify the top 10 source IP addresses (`id.orig_h`) that generated the most HTTP requests. This helps you:
+- Detect possible attackers or scanners  
+- Identify noisy or misbehaving clients  
+- Spot abnormal traffic generators  
 
 ---
+![Top Source IPs](https://private-user-images.githubusercontent.com/67587985/471758116-b4da05d8-3146-48e1-bc4f-707d6e60fe3c.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM3NTAwODEsIm5iZiI6MTc1Mzc0OTc4MSwicGF0aCI6Ii82NzU4Nzk4NS80NzE3NTgxMTYtYjRkYTA1ZDgtMzE0Ni00OGUxLWJjNGYtNzA3ZDZlNjBmZTNjLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjklMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI5VDAwNDMwMVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWI5YWIwMmMzNDFhMDg3NjBjZDgwYWIwOTk5ZDFmNTRmMjI0YWFlMjAzYjc3ZjI5MjZiZTVjYTU3ZWQ5MzU2ZmImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.ij-wXi6hjxOaM69eCXgWnn_hpbrrHK2R1W8khyB-bsw)
 
-### 🔸 IP: `10.0.0.28`
+<p align="center"><b>Figure 7:</b> Result of Top 10 Source IPs Generated.</p>
 
-| **Field**     | **Top Values**                                                                                   | **Insights**                                                |
-|---------------|--------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
-| `event_type`  | Standard (37%), Client Error (21%), Server Error (13%), Suspicious Agent(9.2%),                  | Shows both normal and suspicious interactions                |
-| `method`      | POST (50%), GET (43%), PUT/DELETE (minor)                                                        | High POST = possible payload uploads or login attempts       |
+### 📊 Top 10 Source IPs Generating HTTP Traffic
+
+| IP Address  | Request Count |
+|-------------|----------------|
+| 10.0.0.28   | 76             |
+| 10.0.0.31   | 73             |
+| 10.0.0.42   | 73             |
+| 10.0.0.27   | 72             |
+| 10.0.0.40   | 70             |
+| 10.0.0.45   | 70             |
+| 10.0.0.14   | 69             |
+| 10.0.0.11   | 67             |
+| 10.0.0.13   | 65             |
+| 10.0.0.25   | 65             |
+
+### ✅ What I Observed and Concluded
+
+All top 10 IPs in the HTTP dataset are internal IP addresses (RFC1918 range), and their request counts are fairly close — ranging between 65 and 76 requests each. This strongly suggests:
+
+- The traffic is **evenly distributed**, possibly from **simulated or scripted clients** in a lab environment.  
+- There is **no single IP overwhelming the system**, which reduces the likelihood of DoS-style abuse.  
+- These IPs may represent different **simulated users, scanning agents, or test nodes** interacting with the server in a controlled or test dataset.
+
+> In a real-world environment, I should pay close attention to any IP with **significantly higher traffic**, especially when combined with **high 4xx/5xx error rates** or access to **suspicious URIs**.  
+> However, in this dataset, the pattern appears **deliberately balanced**, likely for **training or testing purposes**.
+
+
+## 2. Count the number of server errors (5xx) observed
+### 🎯 Goal
+
+Count how many times the server returned an error (status codes **500–599**), which helps detect:
+
+- Application crashes  
+- Resource exhaustion (e.g., out of memory, CPU overload)  
+- Misconfigured services  
+- Possible exploitation attempts (e.g., forced 500 errors via malformed inputs)
 
 ---
+![Top Source IPs](https://private-user-images.githubusercontent.com/67587985/471760265-1e544cbe-91fb-42ae-9530-b7d6a4a4038f.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM3NTA4MjcsIm5iZiI6MTc1Mzc1MDUyNywicGF0aCI6Ii82NzU4Nzk4NS80NzE3NjAyNjUtMWU1NDRjYmUtOTFmYi00MmFlLTk1MzAtYjdkNmE0YTQwMzhmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjklMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI5VDAwNTUyN1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTU1ZjI0MDczMmZlMGE2NmY3YzBjYWU4ODI1OTU0NTQ0ZDM5NGM4OTNhYmNhY2M5MTMyYzNkMzVkNmFiMzJjNDYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.UQhQkjhwEJ84a5vlQBJADEVxD4ts2a0pHUtFNN7G-VM)
 
-### 🔸 IP: `10.0.0.42`
+<p align="center"><b>Figure 8:</b> Result of Server Error Responses (5xx)</p>
 
-| **Field**     | **Top Values**                                                                                   | **Insights**                                                |
-|---------------|--------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
-| `event_type`  | Standard (41%), Client Error(19%), Suspicious Agent(10%)                                         | Server Errors and suspicious patterns suggest aggressive or invalid use |
-| `method`      | GET (52%), POST (42%), DELETE/PUT (minor)                                                        | GET-dominant = reconnaissance or probing                     |
+### 📊 Result of Total HTTP status codes in the 5xx range
 
-## ✅ What I Observed and Concluded
+| Metric         | Value |
+|----------------|-------|
+| Server Errors  | 285   |
 
-I analyzed the behavior of the top two source IPs (`10.0.0.28` and `10.0.0.42`) to determine the nature of their interactions with the system.
+### 🧠 What It Means
 
-The IP `10.0.0.28` demonstrated behavior consistent with **exploitation or payload delivery attempts**, showing a high percentage of **POST** requests along with several **PUT** and **DELETE** methods. Additionally, the presence of event types like **"Suspicious Agent"** and **"Suspicious URI"** supports the hypothesis of malicious activity intended to compromise the system.
+| Status Code | Meaning                 | Possible Cause                             |
+|-------------|-------------------------|--------------------------------------------|
+| 500         | Internal Server Error   | Unhandled exception, backend crash         |
+| 502         | Bad Gateway             | Invalid response from upstream server      |
+| 503         | Service Unavailable     | Server overloaded or under maintenance     |
+| 504         | Gateway Timeout         | Upstream timeout                           |
 
-In contrast, IP `10.0.0.42` exhibited a pattern dominated by **GET** requests and a notable number of **Server Error** and **Unexpected Method** responses. This aligns more with **reconnaissance or probing behavior**, possibly using automated tools to scan for exploitable paths or services.
+### ✅ What I Observed and Concluded
 
-These observed patterns are valuable in real-world SOC environments to distinguish **active exploit attempts** from **reconnaissance bots**, allowing teams to **prioritize response** and improve detection strategies.
+The analysis revealed a total of **285 HTTP 5xx responses**, which accounts for approximately **9.5%** of all HTTP activity in the dataset. This is a significant portion, suggesting it could potentially have issues on the **server side**.
 
-## 🎯 Purpose of Investigating Top Source IPs in SSH Logs
+Server-side errors (such as `500 Internal Server Error` and `503 Service Unavailable`) generally indicate that the **web application failed to process valid client requests**. These errors could be caused by:
 
-Investigating the top source IPs is a critical part of SSH log analysis, as it provides insight into how different actors interact with the system and reveals patterns that may indicate malicious behavior.
+- Misconfigured server components  
+- Backend crashes or unhandled exceptions  
+- Overloaded or unavailable services  
+- Or in lab environments, intentional simulation of faults or stress conditions  
 
-By analyzing the top IPs, I aimed to understand the behavior profile of each source — whether they exhibited signs of aggressive scanning, exploitation attempts, or more passive interaction. Certain combinations of `event_type` and `method` fields help identify these patterns more clearly, especially when linked to failed login attempts or unusual method usage.
+Given the presence of previously identified **suspicious URIs** (`/etc/passwd`, `/shell.php`, etc.), it's also likely that **some of these 5xx errors were triggered by malformed or malicious input**.
 
-This analysis also supports attacker classification. For example, repeated requests using common brute-force signatures can point to automated tools, while more targeted or varied activity may suggest more advanced or hands-on attackers.
-
-Overall, source IP analysis helps distinguish between random noise, automated recon, and deliberate exploitation, which is vital for effective threat detection and response.
-
-## 📊 4. Monitor User Behavior
-## 1. Failed Attempts by Session ID (uid)
-
-![Top Source IPs](https://private-user-images.githubusercontent.com/67587985/471074714-41b589f9-848a-4f23-af02-098c4baf0da1.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM1MzA5NjksIm5iZiI6MTc1MzUzMDY2OSwicGF0aCI6Ii82NzU4Nzk4NS80NzEwNzQ3MTQtNDFiNTg5ZjktODQ4YS00ZjIzLWFmMDItMDk4YzRiYWYwZGExLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjYlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI2VDExNTEwOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTBiM2I4YWJmNGI1MThjYTEyYmExNjhlOTZlNjViNDJkZjMxNTI5Y2UwYzhlYTlmMDM4OTJkYmY5M2RlOTEzOGImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.9sHRQqeUWGi_f9mUEe62_fJGBcZrd4FlNcln-dLz8as)
-
-<p align="center"><b>Figure 11:</b> Result of identifying failed login attempts by session</p>
-
-## 📊 Result of HTTP Status Codes
-
-| Seesion uid | failed_attempts |
-|-------------|--------|
-| HT1002482   | 1      |
-| HT1010816   | 1      |
-| HT1021105   | 1      |
-....
-Based on the data, I noticed that each failed login attempt was linked to a different session ID (`uid`), meaning every session only had one failure.
-
-There were a total of **744 failed login events**, and all of them came from **744 unique sessions**. This pattern suggests the use of automated tools that rotate session IDs to avoid detection or rate-limiting, which is something attackers often do to stay under the radar.
-
-## ✅ What I Observed and Concluded
-
-To monitor user behavior, I analyzed **failed login attempts using the `uid` (session ID)** field, since the dataset didn’t contain any actual user account data.
-
-The results showed that all **744 failed login attempts** were each tied to a **unique session ID**, with no repetition. This strongly suggests the use of **automated attack scripts** that intentionally generate a **new session for every attempt** — a known tactic to evade **rate-limiting**, **brute-force protections**, and detection by tools that rely on repeated attempts from the same source.
-
-Even though this behavior doesn’t show repeated failures within a single session, it clearly points to a **distributed attack pattern**, which is much harder to detect unless advanced **cross-session correlation** or **source IP tracking** is in place.
-
-This type of pattern is critical for SOC teams to understand, as it demonstrates how attackers adapt to basic detection thresholds by rotating identifiers across their attempts.
-
-## 🎯 Purpose of Analyzing Failed Logins by `uid` (Session ID)
-
-Even though the dataset lacks a `user` field, analyzing failed login attempts based on the `uid` (session ID) still provides meaningful insights into attacker behavior at the session level.
-
-By focusing on `uid`, I was able to detect sessions with repeated failed login attempts, which is a strong indicator of brute-force activity or credential spraying tools. When a single session repeatedly fails to authenticate, it often points to automated tools attempting password guesses across multiple accounts.
-
-This method also gives SOC analysts session-level visibility. Even without knowing the actual username, tracking activity by session reveals how attackers move through the system, how persistent they are, and what methods they use.
-
-Additionally, analyzing by `uid` helps reduce noise in the logs by narrowing focus to particularly “loud” sessions — those that generate large volumes of failed attempts. This makes it easier to trigger alerts or apply thresholds, enabling faster response to likely threats.
-
-## 2. Analyze Session Duration
-
-![Top Source IPs](https://private-user-images.githubusercontent.com/67587985/471076849-3c35d28a-dfde-4989-8cf2-fcb81c5dc5ab.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM1MzIwNDEsIm5iZiI6MTc1MzUzMTc0MSwicGF0aCI6Ii82NzU4Nzk4NS80NzEwNzY4NDktM2MzNWQyOGEtZGZkZS00OTg5LThjZjItZmNiODFjNWRjNWFiLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjYlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI2VDEyMDkwMVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTRkZDk1ZjcwMjc2NTRlZmIyZGM1YWFhY2MzMWJjODBiOGU1NjZiZmFiYjI0ZDlmYzU1NWMzMzM0YzA2OWQ4YjEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.5Ko69zDL1r0aOViafXoVYbBynSbvfPOe5kq1m-wfnPg)
-
-<p align="center"><b>Figure 11:</b> Result of identifying failed login attempts by session</p>
-
-## 📊 Result of HTTP Status Codes
-
-| Seesion uid | failed_duration |
-|-------------|--------|
-| HT1002482   | 0.00000      |
-| HT1010816   | 0.00000      |
-| HT1021105   | 0.00000      |
-....
-## 🧠 Why Session Durations Are 0
-
-While attempting to calculate session durations using the `ts` (timestamp) field and `uid` (session ID), I found that each session only had a single log entry or all entries shared the exact same timestamp. As a result, the calculation of `max(ts) - min(ts)` per session always resulted in zero.
-
-This is likely because the dataset is simulated — it comes from a public repository and seems to be designed primarily for basic detection or pattern analysis rather than modeling full session behavior. The absence of multiple time-staggered events per session means duration-based analysis isn’t meaningful in this case.
-
-## ✅ What I Observed and Concluded
-
-I attempted to analyze session durations by calculating the time difference between the first and last event (`ts`) for each session (`uid`). However, the results showed that every session had either a single timestamp or multiple events with identical timestamps. This caused all calculated durations to be `0`.
-
-This observation suggests that the dataset logs only one key event per session, rather than tracking full session lifecycles. It's likely a limitation of the simulated dataset — which appears to be designed for basic detection and pattern recognition rather than detailed session-based analysis. As such, session duration insights were not possible in this scenario.
+In a real-world scenario, this volume of server errors would be a **red flag**, prompting deeper investigation into web server logs, backend application errors, and potential exploitation attempts.
 
 
-## 🧾 5. Splunk Report
+## 3. Identify User-Agents associated with possible scripted attacks
+### 🎯 Goal
 
-This section showcases my ability to create and export reports directly from Splunk based on SSH log data analysis. These reports highlight key metrics such as request methods, status codes, and top source IPs—even when using synthetic or simulated datasets.
+Spot automated tools or scripted attacks based on the `user_agent` string in HTTP requests. Many attack tools use unique or non-browser user agents that can help identify malicious activity.
 
-### 📝 Report Title: `SSH Activity Summary Report`
-- **Export Format**: `.pdf`
-- **Purpose**: Demonstrate proficiency in transforming search results into structured, shareable executive reports using Splunk's reporting functionality.
-- **Note**: These reports focus on presenting clear metrics visually rather than providing exhaustive analysis.
+![Top Source IPs](https://private-user-images.githubusercontent.com/67587985/471761499-0289d26f-6506-4002-b33a-b8e3711c2b32.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM3NTEzMTQsIm5iZiI6MTc1Mzc1MTAxNCwicGF0aCI6Ii82NzU4Nzk4NS80NzE3NjE0OTktMDI4OWQyNmYtNjUwNi00MDAyLWIzM2EtYjhlMzcxMWMyYjMyLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjklMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI5VDAxMDMzNFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQ0NGFlYzYwN2QxNjgyMTdhYThlY2ZjNWNmOTcyYTU2MGI3MTczODBiYWJiMjY0MjFmMTcwM2Y3YjQ4YjRlMWMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.2ip-FNRevsAXsJqU4KDRmfk0xy4D-ukoIOITRYnISLE)
 
-### 📄 Reports Included
-| Report Title | Description |
-|--------------|-------------|
-| [SSH_Request_Methods_Distribution-2025-07-26.pdf](SSH_Request_Methods_Distribution-2025-07-26.pdf) | Summarizes the frequency of different HTTP/SSH methods (GET, POST, PUT, DELETE, etc.) used in the log data. |
-| [HTTP_Status_Code_Breakdown_in_SSH_Logs-2025-07-26.pdf](HTTP_Status_Code_Breakdown_in_SSH_Logs-2025-07-26.pdf) | Displays the count and distribution of HTTP status codes (e.g., 200, 404, 503), useful for spotting failed or malicious interactions. |
-| [SSH_Top_Source_IPs-2025-07-26.pdf](SSH_Top_Source_IPs-2025-07-26.pdf) | Lists the most frequent IP addresses initiating SSH sessions or requests, helping to identify potential attackers or scanning sources. |
+<p align="center"><b>Figure 9:</b> Result of Malicious User Agents</p>
 
-📌 _These reports serve as evidence of my technical skill in creating and formatting Splunk reports, suitable for team briefings, stakeholder updates, or audits._
+## 📊 Result: Suspicious User-Agent Activity
 
+| User-Agent                | Count |
+|--------------------------|-------|
+| sqlmap/1.5.1             | 79    |
+| python-requests/2.25.1   | 78    |
+| botnet-checker/1.0       | 70    |
+| curl/7.68.0              | 69    |
 
-## 🧩 6. Splunk Dashboard
+### ✅ What I Observed and Concluded
 
-### 🎯 Dashboard Title: `SSH Log Behavior Overview`
+The HTTP log analysis reveals that at least 296 requests were made using non-browser user agents commonly associated with automated attacks or malicious scanning tools. The presence of tools like `sqlmap`, `curl`, and `python-requests` highlights:
 
-**Panels included**:
-- **Top 10 Source IPs**: Horizontal bar chart showing top IPs by activity  
-- **HTTP Status Code Breakdown**: Pie chart showing 200, 404, 400, 500, etc.  
-- **Request Method Distribution**: Pie chart showing GET, POST, PUT, DELETE  
+- Reconnaissance and probing activity from automated tools  
+- Potential exploitation attempts, especially SQL injection (`sqlmap`)  
+- Traffic consistent with simulated attack scenarios or real-world attacker behavior  
 
-🔍 **Description**:  
-> This dashboard provides a visual overview of SSH log behavior, including the most active source IPs (potential attackers), the types of HTTP request methods observed, and the distribution of HTTP response status codes. It helps analysts quickly identify unusual patterns in SSH traffic.
+In a real-world environment, these user-agents would be considered strong Indicators of Compromise (IOCs) and should trigger:
 
-📄 **Dashboard PDF**:  
-- [ssh_log_behavior_overview-2025-07-26.pdf](ssh_log_behavior_overview-2025-07-26.pdf)
+- Security alerts  
+- IP blocks  
+- Further investigation into the affected endpoints
 
+## 🛡️ Real-World HTTP Log Analysis: What Pro Analysts Look For
+
+| 🔍 **Focus Area** | 🧠 **Why It's Important** | 🧪 **Sample Splunk Query** |
+|------------------|---------------------------|----------------------------|
+| **Sensitive URIs Accessed** | Detects probing of admin or critical files | `index=<your_index> sourcetype=<your_sourcetype> uri="/admin" OR uri="/wp-admin" OR uri="/etc/passwd" OR uri="/shell.php" \| stats count by uri, id.orig_h` |
+| **Brute Force Attempts** | Identifies repeated login failures from same host | `index=<your_index> sourcetype=<your_sourcetype> action="login" status="failed" \| stats count by id.orig_h, user` |
+| **Malicious User-Agents** | Flags toolkits like `sqlmap`, `curl`, etc. | `index=<your_index> sourcetype=<your_sourcetype> \| top limit=10 user_agent` |
+| **Unusual HTTP Methods** | `PUT`, `DELETE`, or `CONNECT` may indicate attacks | `index=<your_index> sourcetype=<your_sourcetype> \| stats count by method \| where method IN ("PUT", "DELETE", "CONNECT")` |
+| **High 4xx/5xx Error Rates** | Detects scanning, broken endpoints, or attacks | `index=<your_index> sourcetype=<your_sourcetype> status_code>=400 \| stats count by status_code` |
+| **Spike in Requests/IP** | Unusual traffic from a host = DDoS or scanner | `index=<your_index> sourcetype=<your_sourcetype> \| timechart span=1m count by id.orig_h` |
+| **Large File Downloads** | Could indicate data exfiltration attempts | `index=<your_index> sourcetype=<your_sourcetype> resp_body_len>500000 \| table _time id.orig_h uri resp_body_len \| sort -resp_body_len` |
+| **GeoIP Lookup** | Identifies access from foreign or malicious regions | `index=<your_index> sourcetype=<your_sourcetype> \| iplocation id.orig_h \| stats count by Country` |
+| **Repeated URI Requests** | High repetition may signal automation or attack scripts | `index=<your_index> sourcetype=<your_sourcetype> \| stats count by id.orig_h, uri \| sort -count` |
 
 ## 🧠 Conclusion
+This project demonstrates how Splunk can be effectively used to analyze HTTP logs for identifying web traffic patterns, anomalies, and signs of malicious behavior. Through field extraction, search queries, and visualizations, we were able to:
 
-This project demonstrated key Splunk capabilities:
-- Field extraction and search optimization  
-- Anomaly detection using time-based visualizations  
-- Attack surface profiling based on source IPs  
-- Behavioral pattern analysis using session metadata  
-- Creation of interactive dashboards and exportable reports  
+- Identify common and uncommon HTTP methods, including possible automated activity through abnormal usage of `PUT`, `DELETE`, `OPTIONS`, and `CONNECT`
+- Analyze the most accessed URIs, revealing signs of scanning, brute-force, and exploitation attempts (e.g., `/admin`, `/etc/passwd`, `/wp-admin`)
+- Evaluate response codes to detect a significant number of 4xx and 5xx errors, highlighting potential misconfigurations or attack-related errors
+- Detect suspicious user-agent strings like `sqlmap`, `curl`, and `python-requests`, which are commonly tied to automated tools and scanners
+- Examine source IP addresses, showing evenly distributed activity from internal IPs — likely indicating a controlled lab or simulation environment
+- Identify large file transfers and server-side errors that would warrant investigation in a real-world setup
 
-Although the dataset was simulated and time-constrained, the methods and skills applied reflect real-world SIEM use cases and blue-team analysis workflows.
-
-💡 **Key takeaways from this home lab**:
-- Gained experience in identifying critical patterns in SSH logs  
-- Learned what to analyze to understand potential attacker behavior  
-- Practiced extracting valuable insights from SSH logs using Splunk’s search language and visualization tools
+## 📎 References
+(https://github.com/0xrajneesh/Splunk-Projects-For-Beginners/blob/main/project%233-analyzing-http-logs-using-splunk-siem.md)
