@@ -14,19 +14,7 @@ HTTP (Hypertext Transfer Protocol) log files contain valuable information about 
 - **Event count**: 3000 events  
 - **Format**: Structured JSON containing fields such as `ts`, `status_code`, `id.orig_h`, `id.resp_h`, `method`, `uri`, `user_agent`, `event_type`, and `resp_body_len`
 
-![Data Uploaded to Splunk](https://private-user-images.githubusercontent.com/67587985/471569820-c42be56c-1dd8-446a-b17f-25255c52af6a.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM3MTU5MDcsIm5iZiI6MTc1MzcxNTYwNywicGF0aCI6Ii82NzU4Nzk4NS80NzE1Njk4MjAtYzQyYmU1NmMtMWRkOC00NDZhLWIxN2YtMjUyNTVjNTJhZjZhLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI4VDE1MTMyN1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWE3Zjc1NWEwODQwNGVjNGRkYjQ0YmI3MWVjYmVmNzBmMDhiMzFlYjRmN2MwMzljYWFjZTVkM2Y4NDY4N2U3MjcmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.gxIoOIuHsM4F1oi5W93B9riLaqGWi0Smf8sT3eWYT9c)
-
-<p align="center"><b>Figure 1:</b> Data successfully uploaded into Splunk.</p>
-
 ## ✅ 1. Relevant Fields Extracted by Splunk
-
-![Data Uploaded to Splunk](https://private-user-images.githubusercontent.com/67587985/471572219-23e0f53d-63c5-461b-93da-605038d5a088.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM3MTYxNzQsIm5iZiI6MTc1MzcxNTg3NCwicGF0aCI6Ii82NzU4Nzk4NS80NzE1NzIyMTktMjNlMGY1M2QtNjNjNS00NjFiLTkzZGEtNjA1MDM4ZDVhMDg4LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI4VDE1MTc1NFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTFhNGQ0ZjU3YTA5ODVhOWIyYjk1ODI4MDlkOTJjNjg1MTk3YzNmZmFjMDYyNjk2NTQxM2Q3ZDc4ZmE0MzE0NTEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.Pq4gRzziJ1bw6IHmFFxScw4NMx4S602HNXTgnIRVVSw)
-
-<p align="center"><b>Figure 2:</b> Search for http event with source file name.</p>
-
-![Data Uploaded to Splunk](https://private-user-images.githubusercontent.com/67587985/471572430-8b430df3-9e18-46ad-b660-3199d845fae4.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM3MTYyMDEsIm5iZiI6MTc1MzcxNTkwMSwicGF0aCI6Ii82NzU4Nzk4NS80NzE1NzI0MzAtOGI0MzBkZjMtOWUxOC00NmFkLWI2NjAtMzE5OWQ4NDVmYWU0LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI4VDE1MTgyMVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTk2MjY3ZjlmMDYyNjJmNWI1YTA5NzIwZGU2ZDMzNDFkM2U1OTFiZmMwODY2M2YzY2E4OGNhNTdmNTUyOGFmYzgmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.2yOmL4lE3e7SH7pTGcbKyxX6zpO3M3tALEIEU706AC0)
-
-<b>Figure 3:</b> Interesting field extracted by Splunk.
 
 ### ➤ What was done:
 Splunk automatically extracted all important fields from the JSON structure, including:
@@ -51,11 +39,6 @@ Splunk automatically extracted all important fields from the JSON structure, inc
 ### 🎯 Goal
 
 Identify what types of HTTP methods are used and how often — this helps me understand the behavior of clients interacting with the web server
-
-
-![Data Uploaded to Splunk](https://private-user-images.githubusercontent.com/67587985/471574580-17232209-35cd-4d2c-8ead-a91a9a6984d2.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM3MTY0NzUsIm5iZiI6MTc1MzcxNjE3NSwicGF0aCI6Ii82NzU4Nzk4NS80NzE1NzQ1ODAtMTcyMzIyMDktMzVjZC00ZDJjLThlYWQtYTkxYTlhNjk4NGQyLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI4VDE1MjI1NVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTZlMTIwZDU0ZTExYWFhYzhkZDg3MjRmY2U1YTRlZWQxN2NlZGViNGNlYjk2ODAyN2MxNDI3OWE5MWM3MmRkMjYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.plNqw_dOL8poIxtDRS7hlGSQ9JidHS7kSwyt78JbVFQ)
-
-<p align="center"><b>Figure 4:</b> Result of HTTP Methods</p>
 
 ### ✅ HTTP Method Distribution Result
 
@@ -99,9 +82,6 @@ Find out which endpoints (URIs) are most frequently accessed. This helps you:
 - Spot unusual or suspicious activity (e.g., repeated access to login or admin pages)
 
 ---
-![Top Source IPs](https://private-user-images.githubusercontent.com/67587985/471580665-4ad92425-a06e-40a6-8afc-11aa91c0b6a5.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM3MTczNjgsIm5iZiI6MTc1MzcxNzA2OCwicGF0aCI6Ii82NzU4Nzk4NS80NzE1ODA2NjUtNGFkOTI0MjUtYTA2ZS00MGE2LThhZmMtMTFhYTkxYzBiNmE1LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI4VDE1Mzc0OFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTFjMTFjM2IzYjVmNWQ5ZGZhZWU2OTJlMTM4NThlMzU3MTc2OWNmM2ZkNWE3ZmJhMWVhMTY2MDE0NDI0ZWZmZGMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.52Qy0HHz5mQBcem20NfJBojIHwYeGVw1FifrRIIEVFU)
-
-<p align="center"><b>Figure 5:</b> Result of HTTP The Top Source URLs or Endpoints</p>
 
 ### ✅ Summary of Top Accessed URIs
 
@@ -142,10 +122,6 @@ Understand how your web server responded to requests — this helps detect:
 - Client errors (`404 Not Found`, `403 Forbidden`)
 - Server errors (`500 Internal Server Error`, etc.)
 
-![Top Source IPs](https://private-user-images.githubusercontent.com/67587985/471584582-397d9445-a846-42c4-a507-d1fa5811975b.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM3MTc4NDUsIm5iZiI6MTc1MzcxNzU0NSwicGF0aCI6Ii82NzU4Nzk4NS80NzE1ODQ1ODItMzk3ZDk0NDUtYTg0Ni00MmM0LWE1MDctZDFmYTU4MTE5NzViLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI4VDE1NDU0NVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWMwM2M4NTVlYWUyNzA4MTJjY2E1Y2JhYzg2YzYzNDk2MTk0NDAyYjYzMGM1ZTQwNGNmYzE3ZmNmNGRhNDgzMzcmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.s_bSXOq17TYwmI8wdup1t6CpFpK3AiSgCsTO-PzCL6c)
-
-<p align="center"><b>Figure 6:</b> Result of HTTP Response Code</p>
-
 ### 📊 Response Code Summary
 
 | Status Code | Count | Meaning                                       |
@@ -179,10 +155,6 @@ Identify the top 10 source IP addresses (`id.orig_h`) that generated the most HT
 - Spot abnormal traffic generators  
 
 ---
-![Top Source IPs](https://private-user-images.githubusercontent.com/67587985/471758116-b4da05d8-3146-48e1-bc4f-707d6e60fe3c.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM3NTAwODEsIm5iZiI6MTc1Mzc0OTc4MSwicGF0aCI6Ii82NzU4Nzk4NS80NzE3NTgxMTYtYjRkYTA1ZDgtMzE0Ni00OGUxLWJjNGYtNzA3ZDZlNjBmZTNjLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjklMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI5VDAwNDMwMVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWI5YWIwMmMzNDFhMDg3NjBjZDgwYWIwOTk5ZDFmNTRmMjI0YWFlMjAzYjc3ZjI5MjZiZTVjYTU3ZWQ5MzU2ZmImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.ij-wXi6hjxOaM69eCXgWnn_hpbrrHK2R1W8khyB-bsw)
-
-<p align="center"><b>Figure 7:</b> Result of Top 10 Source IPs Generated.</p>
-
 ### 📊 Top 10 Source IPs Generating HTTP Traffic
 
 | IP Address  | Request Count |
@@ -221,10 +193,6 @@ Count how many times the server returned an error (status codes **500–599**), 
 - Possible exploitation attempts (e.g., forced 500 errors via malformed inputs)
 
 ---
-![Top Source IPs](https://private-user-images.githubusercontent.com/67587985/471760265-1e544cbe-91fb-42ae-9530-b7d6a4a4038f.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM3NTA4MjcsIm5iZiI6MTc1Mzc1MDUyNywicGF0aCI6Ii82NzU4Nzk4NS80NzE3NjAyNjUtMWU1NDRjYmUtOTFmYi00MmFlLTk1MzAtYjdkNmE0YTQwMzhmLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjklMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI5VDAwNTUyN1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTU1ZjI0MDczMmZlMGE2NmY3YzBjYWU4ODI1OTU0NTQ0ZDM5NGM4OTNhYmNhY2M5MTMyYzNkMzVkNmFiMzJjNDYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.UQhQkjhwEJ84a5vlQBJADEVxD4ts2a0pHUtFNN7G-VM)
-
-<p align="center"><b>Figure 8:</b> Result of Server Error Responses (5xx)</p>
-
 ### 📊 Result of Total HTTP status codes in the 5xx range
 
 | Metric         | Value |
@@ -260,10 +228,6 @@ In a real-world scenario, this volume of server errors would be a **red flag**, 
 ### 🎯 Goal
 
 Spot automated tools or scripted attacks based on the `user_agent` string in HTTP requests. Many attack tools use unique or non-browser user agents that can help identify malicious activity.
-
-![Top Source IPs](https://private-user-images.githubusercontent.com/67587985/471761499-0289d26f-6506-4002-b33a-b8e3711c2b32.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTM3NTEzMTQsIm5iZiI6MTc1Mzc1MTAxNCwicGF0aCI6Ii82NzU4Nzk4NS80NzE3NjE0OTktMDI4OWQyNmYtNjUwNi00MDAyLWIzM2EtYjhlMzcxMWMyYjMyLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTA3MjklMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNzI5VDAxMDMzNFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQ0NGFlYzYwN2QxNjgyMTdhYThlY2ZjNWNmOTcyYTU2MGI3MTczODBiYWJiMjY0MjFmMTcwM2Y3YjQ4YjRlMWMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.2ip-FNRevsAXsJqU4KDRmfk0xy4D-ukoIOITRYnISLE)
-
-<p align="center"><b>Figure 9:</b> Result of Malicious User Agents</p>
 
 ## 📊 Result: Suspicious User-Agent Activity
 
